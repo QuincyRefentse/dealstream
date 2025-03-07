@@ -1,104 +1,87 @@
-import React, { useRef, useEffect, useCallback } from "react";
-import * as cocossd from "@tensorflow-models/coco-ssd"; // Import the Coco-SSD model
-import Webcam from "react-webcam"; // Import the Webcam component
-
-// Drawing utility function (For demo, you can extend it based on your needs)
-const drawRect = (detections, ctx) => {
-  detections.forEach((prediction) => {
-    const [x, y, width, height] = prediction.bbox;
-    ctx.beginPath();
-    ctx.rect(x, y, width, height);
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = "red";
-    ctx.fillStyle = "red";
-    ctx.stroke();
-    ctx.fillText(
-      `${prediction.class} - ${Math.round(prediction.score * 100)}%`,
-      x,
-      y > 10 ? y - 5 : 10
-    );
-  });
-};
+// Import dependencies
+import React, { useRef, useState, useEffect } from "react";
+import * as tf from "@tensorflow/tfjs";
+import * as cocossd from "@tensorflow-models/coco-ssd";
+import Webcam from "react-webcam";
+import "./App.css";
+import { drawRect } from "./utility";
 
 function Camera() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
-  // Use useCallback to memoize the runCoco function
-  const runCoco = useCallback(async () => {
-    const net = await cocossd.load(); // Load the COCO-SSD model
-
-    // Loop and detect objects in the video stream
+  // Main function
+  const runCoco = async () => {
+    const net = await cocossd.load();
+    console.log("Handpose model loaded.");
+    //  Loop and detect hands
     setInterval(() => {
       detect(net);
-    }, 100); // Detect every 100ms (10 FPS)
-  }, []); // Empty dependency array means this will not change across renders
+    }, 10);
+  };
 
-  // Detection function
   const detect = async (net) => {
+    // Check data is available
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
       webcamRef.current.video.readyState === 4
     ) {
+      // Get Video Properties
       const video = webcamRef.current.video;
-      const videoWidth = video.videoWidth;
-      const videoHeight = video.videoHeight;
+      const videoWidth = webcamRef.current.video.videoWidth;
+      const videoHeight = webcamRef.current.video.videoHeight;
 
-      // Set video width and height
+      // Set video width
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
 
-      // Set canvas width and height to match video
+      // Set canvas height and width
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
 
-      // Make detection
+      // Make Detections
       const obj = await net.detect(video);
-      console.log(obj);
 
-      // Draw rectangles on canvas
+      // Draw mesh
       const ctx = canvasRef.current.getContext("2d");
-      drawRect(obj, ctx); // Call the drawing utility function
+      drawRect(obj, ctx); 
     }
   };
 
-  // Run the object detection when the component mounts
-  useEffect(() => {
-    runCoco();
-  }, [runCoco]); // runCoco is now memoized and will not change on every render
+  useEffect(()=>{runCoco()},[]);
 
   return (
     <div className="App">
       <header className="App-header">
-        {/* Webcam feed */}
         <Webcam
           ref={webcamRef}
-          muted={true}
-          videoConstraints={{
-            facingMode: "user", // Default to the front camera, but will allow switching
-          }}
+          muted={true} 
           style={{
             position: "absolute",
-            top: 0,
+            marginLeft: "auto",
+            marginRight: "auto",
             left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover", // Ensures the webcam feed covers the screen
-            zIndex: 9,
+            right: 0,
+            textAlign: "center",
+            zindex: 9,
+            width: 640,
+            height: 480,
           }}
         />
 
-        {/* Canvas overlay */}
         <canvas
           ref={canvasRef}
           style={{
             position: "absolute",
-            top: 0,
+            marginLeft: "auto",
+            marginRight: "auto",
             left: 0,
-            width: "100%",
-            height: "100%",
-            zIndex: 8,
+            right: 0,
+            textAlign: "center",
+            zindex: 8,
+            width: 640,
+            height: 480,
           }}
         />
       </header>
