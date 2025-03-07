@@ -75,6 +75,9 @@ function Camera() {
       // Make detections
       const obj = await net.detect(video);
 
+      //Logger to report detected objects
+      console.log("Detected objects:", obj); //
+
       // Draw bounding boxes and labels
       const ctx = canvasRef.current.getContext("2d");
       drawRect(obj, ctx);
