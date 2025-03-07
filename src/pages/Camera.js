@@ -1,6 +1,5 @@
 // Import dependencies
-import React, { useRef, useState, useEffect } from "react";
-import * as tf from "@tensorflow/tfjs";
+import React, { useRef, useEffect, useCallback } from "react";
 import * as cocossd from "@tensorflow-models/coco-ssd";
 import Webcam from "react-webcam";
 import "./App.css";
@@ -10,18 +9,19 @@ function Camera() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
-  // Main function
-  const runCoco = async () => {
+  // Define the runCoco function using useCallback
+  const runCoco = useCallback(async () => {
     const net = await cocossd.load();
-    console.log("Handpose model loaded.");
-    //  Loop and detect hands
+    console.log("Coco-SSD model loaded.");
+
+    // Loop and detect hands
     setInterval(() => {
       detect(net);
-    }, 10);
-  };
+    }, 100); // Reduce interval for better performance (10 FPS)
+  }, []); // Empty dependency array ensures it only runs once on mount
 
   const detect = async (net) => {
-    // Check data is available
+    // Check if webcam data is available
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
@@ -45,18 +45,20 @@ function Camera() {
 
       // Draw mesh
       const ctx = canvasRef.current.getContext("2d");
-      drawRect(obj, ctx); 
+      drawRect(obj, ctx);
     }
   };
 
-  useEffect(()=>{runCoco()},[]);
+  useEffect(() => {
+    runCoco(); // Call the runCoco function
+  }, [runCoco]); // Add runCoco as a dependency
 
   return (
     <div className="App">
       <header className="App-header">
         <Webcam
           ref={webcamRef}
-          muted={true} 
+          muted={true}
           style={{
             position: "absolute",
             marginLeft: "auto",
@@ -64,7 +66,7 @@ function Camera() {
             left: 0,
             right: 0,
             textAlign: "center",
-            zindex: 9,
+            zIndex: 9,
             width: 640,
             height: 480,
           }}
@@ -79,7 +81,7 @@ function Camera() {
             left: 0,
             right: 0,
             textAlign: "center",
-            zindex: 8,
+            zIndex: 8,
             width: 640,
             height: 480,
           }}
