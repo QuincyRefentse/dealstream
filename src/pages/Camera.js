@@ -75,11 +75,14 @@ function Camera() {
       // Make detections
       const obj = await net.detect(video);
 
-      //Logger to report detected objects
+      // Logger to report detected objects
       console.log("Detected objects:", obj); // Output detected objects
 
-      // Draw bounding boxes and labels
+      // Get the canvas drawing context
       const ctx = canvasRef.current.getContext("2d");
+      console.log(ctx); // Check if context is valid
+
+      // Draw bounding boxes and labels
       drawRect(obj, ctx);
     }
   };
@@ -99,6 +102,8 @@ function Camera() {
             const video = webcamRef.current.video;
             const videoWidth = video.videoWidth;
             const videoHeight = video.videoHeight;
+
+            console.log("Video Dimensions:", videoWidth, videoHeight); // Debugging log
             canvasRef.current.width = videoWidth;
             canvasRef.current.height = videoHeight;
           }}
@@ -124,7 +129,7 @@ function Camera() {
             left: 0,
             width: dimensions.width,
             height: dimensions.height,
-            zIndex: 8,
+            zIndex: 10, // Ensure canvas is above the webcam feed
           }}
         />
       </header>

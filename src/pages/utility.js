@@ -1,6 +1,8 @@
 export const drawRect = (detections, ctx) => {
     if (detections.length === 0) return; // Prevent drawing if no detections
   
+    console.log("Drawing boxes for:", detections); // Debugging log
+  
     detections.forEach((prediction) => {
       const [x, y, width, height] = prediction['bbox'];
       const text = prediction['class'];
