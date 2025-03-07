@@ -1,5 +1,4 @@
-// Import dependencies
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 import * as cocossd from "@tensorflow-models/coco-ssd";
 import Webcam from "react-webcam";
 import "./App.css";
@@ -8,16 +7,39 @@ import { drawRect } from "./utility";
 function Camera() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  // Update dimensions on window resize
+  const handleResize = () => {
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  };
+
+  // Add event listener for resizing
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   // Define the runCoco function using useCallback
   const runCoco = useCallback(async () => {
     const net = await cocossd.load();
     console.log("Coco-SSD model loaded.");
 
-    // Loop and detect hands
-    setInterval(() => {
+    // Loop and detect objects
+    const detectLoop = () => {
       detect(net);
-    }, 100); // Reduce interval for better performance (10 FPS)
+      requestAnimationFrame(detectLoop); // Keep calling detect on every frame
+    };
+
+    requestAnimationFrame(detectLoop); // Start the detection loop
   }, []); // Empty dependency array ensures it only runs once on mount
 
   const detect = async (net) => {
@@ -29,8 +51,8 @@ function Camera() {
     ) {
       // Get Video Properties
       const video = webcamRef.current.video;
-      const videoWidth = webcamRef.current.video.videoWidth;
-      const videoHeight = webcamRef.current.video.videoHeight;
+      const videoWidth = video.videoWidth;
+      const videoHeight = video.videoHeight;
 
       // Set video width
       webcamRef.current.video.width = videoWidth;
@@ -59,16 +81,25 @@ function Camera() {
         <Webcam
           ref={webcamRef}
           muted={true}
+          onLoadedMetadata={() => {
+            // Wait for video metadata to load before setting canvas size
+            const video = webcamRef.current.video;
+            const videoWidth = video.videoWidth;
+            const videoHeight = video.videoHeight;
+            canvasRef.current.width = videoWidth;
+            canvasRef.current.height = videoHeight;
+          }}
+          videoConstraints={{
+            facingMode: "user", // Use front camera (can be modified for back camera)
+          }}
           style={{
             position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
+            top: 0,
             left: 0,
-            right: 0,
-            textAlign: "center",
+            width: dimensions.width,
+            height: dimensions.height,
+            objectFit: "cover", // Ensures the webcam feed covers the entire screen
             zIndex: 9,
-            width: 640,
-            height: 480,
           }}
         />
 
@@ -76,14 +107,11 @@ function Camera() {
           ref={canvasRef}
           style={{
             position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
+            top: 0,
             left: 0,
-            right: 0,
-            textAlign: "center",
+            width: dimensions.width,
+            height: dimensions.height,
             zIndex: 8,
-            width: 640,
-            height: 480,
           }}
         />
       </header>
