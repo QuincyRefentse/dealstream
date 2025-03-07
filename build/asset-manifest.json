@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/QuincyRefentse/dealstream/static/css/main.502a8dff.css",
-    "main.js": "/QuincyRefentse/dealstream/static/js/main.9a4880e6.js",
+    "main.js": "/QuincyRefentse/dealstream/static/js/main.8222d692.js",
     "static/js/453.4fbc1930.chunk.js": "/QuincyRefentse/dealstream/static/js/453.4fbc1930.chunk.js",
     "index.html": "/QuincyRefentse/dealstream/index.html",
     "static/media/home.svg": "/QuincyRefentse/dealstream/static/media/home.f981ee9d6dcfecf8c081d9efc60e5d95.svg",
     "static/media/rss.svg": "/QuincyRefentse/dealstream/static/media/rss.b119639fe84ced8c1c3b9bd704bb96b1.svg",
     "static/media/user.svg": "/QuincyRefentse/dealstream/static/media/user.780a52a3688dd2fd0230fe4949982dd5.svg",
     "main.502a8dff.css.map": "/QuincyRefentse/dealstream/static/css/main.502a8dff.css.map",
-    "main.9a4880e6.js.map": "/QuincyRefentse/dealstream/static/js/main.9a4880e6.js.map",
+    "main.8222d692.js.map": "/QuincyRefentse/dealstream/static/js/main.8222d692.js.map",
     "453.4fbc1930.chunk.js.map": "/QuincyRefentse/dealstream/static/js/453.4fbc1930.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.502a8dff.css",
-    "static/js/main.9a4880e6.js"
+    "static/js/main.8222d692.js"
   ]
 }

@@ -1,15 +1,8 @@
-import React, { useRef, useEffect } from "react";
-import * as tf from "@tensorflow/tfjs";
-import * as cocossd from "@tensorflow-models/coco-ssd"; 
+import React, { useRef, useEffect, useCallback } from "react";
+import * as cocossd from "@tensorflow-models/coco-ssd"; // Import the Coco-SSD model
+import Webcam from "react-webcam"; // Import the Webcam component
 
-// Import the Coco-SSD model : STEP 1
-import Webcam from "react-webcam";
-
-//import "./App.css";
-
-// Drawing utility function (For demo, you can extend it based on your needs) : STEP 2
-
-
+// Drawing utility function (For demo, you can extend it based on your needs)
 const drawRect = (detections, ctx) => {
   detections.forEach((prediction) => {
     const [x, y, width, height] = prediction.bbox;
@@ -31,18 +24,15 @@ function Camera() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
-  // Main function to load model and detect objects
-  const runCoco = async () => {
-
-    // Load the COCO-SSD model : STEP 4 : 
-
-    const net = await cocossd.load(); 
+  // Use useCallback to memoize the runCoco function
+  const runCoco = useCallback(async () => {
+    const net = await cocossd.load(); // Load the COCO-SSD model
 
     // Loop and detect objects in the video stream
     setInterval(() => {
       detect(net);
     }, 100); // Detect every 100ms (10 FPS)
-  };
+  }, []); // Empty dependency array means this will not change across renders
 
   // Detection function
   const detect = async (net) => {
@@ -75,7 +65,7 @@ function Camera() {
   // Run the object detection when the component mounts
   useEffect(() => {
     runCoco();
-  }, []);
+  }, [runCoco]); // runCoco is now memoized and will not change on every render
 
   return (
     <div className="App">
@@ -85,9 +75,7 @@ function Camera() {
           ref={webcamRef}
           muted={true}
           videoConstraints={{
-            // No specific facing mode or deviceId
             facingMode: "user", // Default to the front camera, but will allow switching
-            // Optional: leave undefined for all available cameras
           }}
           style={{
             position: "absolute",
