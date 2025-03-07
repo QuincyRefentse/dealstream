@@ -3,6 +3,7 @@ import * as cocossd from "@tensorflow-models/coco-ssd";
 import Webcam from "react-webcam";
 import "./App.css";
 import { drawRect } from "./utility";
+import * as tf from "@tensorflow/tfjs";
 
 function Camera() {
   const webcamRef = useRef(null);
@@ -28,8 +29,18 @@ function Camera() {
     };
   }, []);
 
-  // Define the runCoco function using useCallback
+  // Set TensorFlow.js backend (WebGL or CPU)
+  const setBackend = async () => {
+    try {
+      await tf.setBackend("webgl"); // Set to WebGL for GPU acceleration, or 'cpu' if WebGL isn't supported
+    } catch (error) {
+      console.error("Error setting TensorFlow.js backend:", error);
+    }
+  };
+
+  // Initialize Coco-SSD model
   const runCoco = useCallback(async () => {
+    await setBackend(); // Ensure the backend is set before loading the model
     const net = await cocossd.load();
     console.log("Coco-SSD model loaded.");
 
@@ -49,7 +60,6 @@ function Camera() {
       webcamRef.current !== null &&
       webcamRef.current.video.readyState === 4
     ) {
-      // Get Video Properties
       const video = webcamRef.current.video;
       const videoWidth = video.videoWidth;
       const videoHeight = video.videoHeight;
@@ -62,17 +72,17 @@ function Camera() {
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
 
-      // Make Detections
+      // Make detections
       const obj = await net.detect(video);
 
-      // Draw mesh
+      // Draw bounding boxes and labels
       const ctx = canvasRef.current.getContext("2d");
       drawRect(obj, ctx);
     }
   };
 
   useEffect(() => {
-    runCoco(); // Call the runCoco function
+    runCoco(); // Call the runCoco function once on mount
   }, [runCoco]); // Add runCoco as a dependency
 
   return (
