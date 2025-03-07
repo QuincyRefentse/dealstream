@@ -55,6 +55,7 @@ function Camera() {
 
       // Make detection
       const obj = await net.detect(video);
+      console.log(obj);
 
       // Draw rectangles on canvas
       const ctx = canvasRef.current.getContext("2d");
