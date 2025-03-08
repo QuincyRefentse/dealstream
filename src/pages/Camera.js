@@ -52,10 +52,7 @@ function Camera() {
   }, []);
 
   const detect = async (net) => {
-    if (
-      webcamRef.current &&
-      webcamRef.current.video.readyState === 4
-    ) {
+    if (webcamRef.current && webcamRef.current.video.readyState === 4) {
       const video = webcamRef.current.video;
       const videoWidth = video.videoWidth;
       const videoHeight = video.videoHeight;
@@ -68,6 +65,21 @@ function Camera() {
       const obj = await net.detect(video);
       const ctx = canvasRef.current.getContext("2d");
       drawRect(obj, ctx);
+
+      // Save detection results
+      const timestamp = new Date().toISOString();
+      const newReports = obj.map((prediction, index) => ({
+        objectNo: `${timestamp}-${index}`,
+        objectType: prediction.class,
+        objectProbability: Math.round(prediction.score * 100),
+        timestamp: timestamp,
+      }));
+
+      const existingReports = JSON.parse(
+        localStorage.getItem("detectionReports") || "[]"
+      );
+      const updatedReports = [...existingReports, ...newReports];
+      localStorage.setItem("detectionReports", JSON.stringify(updatedReports));
     }
   };
 
@@ -76,7 +88,7 @@ function Camera() {
   }, [runCoco]);
 
   const switchCamera = () => {
-    setIsBackCamera(prev => !prev);
+    setIsBackCamera((prev) => !prev);
   };
 
   return (
@@ -91,7 +103,7 @@ function Camera() {
             canvasRef.current.height = video.videoHeight;
           }}
           videoConstraints={{
-            facingMode: isBackCamera ? "environment" : "user"
+            facingMode: isBackCamera ? "environment" : "user",
           }}
           style={{
             position: "absolute",
@@ -117,23 +129,33 @@ function Camera() {
         />
 
         {/* Control Buttons */}
-        <div style={{
-          position: "fixed",
-          bottom: 20,
-          right: 20,
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          zIndex: 11
-        }}>
-          <button 
+        <div
+          style={{
+            position: "fixed",
+            bottom: 20,
+            right: 20,
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            zIndex: 11,
+          }}
+        >
+          <button
             onClick={switchCamera}
             style={buttonStyle}
             title="Switch Camera"
           >
             🔄
           </button>
-          
+
+          <button
+            onClick={() => navigate("/reports")}
+            style={buttonStyle}
+            title="View Reports"
+          >
+            📊
+          </button>
+
           <button 
             onClick={() => navigate("/home")}
             style={buttonStyle}
@@ -163,5 +185,3 @@ const buttonStyle = {
 };
 
 export default Camera;
-
-
