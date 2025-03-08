@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as cocossd from "@tensorflow-models/coco-ssd";
 import Webcam from "react-webcam";
 import "./App.css";
@@ -8,10 +9,12 @@ import * as tf from "@tensorflow/tfjs";
 function Camera() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  const navigate = useNavigate();
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const [isBackCamera, setIsBackCamera] = useState(false);
 
   // Update dimensions on window resize
   const handleResize = () => {
@@ -21,7 +24,6 @@ function Camera() {
     });
   };
 
-  // Add event listener for resizing
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     return () => {
@@ -29,67 +31,53 @@ function Camera() {
     };
   }, []);
 
-  // Set TensorFlow.js backend (WebGL or CPU)
   const setBackend = async () => {
     try {
-      await tf.setBackend("webgl"); // Set to WebGL for GPU acceleration, or 'cpu' if WebGL isn't supported
+      await tf.setBackend("webgl");
     } catch (error) {
       console.error("Error setting TensorFlow.js backend:", error);
     }
   };
 
-  // Initialize Coco-SSD model
   const runCoco = useCallback(async () => {
-    await setBackend(); // Ensure the backend is set before loading the model
+    await setBackend();
     const net = await cocossd.load();
     console.log("Coco-SSD model loaded.");
 
-    // Loop and detect objects
     const detectLoop = () => {
       detect(net);
-      requestAnimationFrame(detectLoop); // Keep calling detect on every frame
+      requestAnimationFrame(detectLoop);
     };
-
-    requestAnimationFrame(detectLoop); // Start the detection loop
-  }, []); // Empty dependency array ensures it only runs once on mount
+    requestAnimationFrame(detectLoop);
+  }, []);
 
   const detect = async (net) => {
-    // Check if webcam data is available
     if (
-      typeof webcamRef.current !== "undefined" &&
-      webcamRef.current !== null &&
+      webcamRef.current &&
       webcamRef.current.video.readyState === 4
     ) {
       const video = webcamRef.current.video;
       const videoWidth = video.videoWidth;
       const videoHeight = video.videoHeight;
 
-      // Set video width
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
-
-      // Set canvas height and width
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
 
-      // Make detections
       const obj = await net.detect(video);
-
-      // Logger to report detected objects
-      console.log("Detected objects:", obj); // Output detected objects
-
-      // Get the canvas drawing context
       const ctx = canvasRef.current.getContext("2d");
-      console.log(ctx); // Check if context is valid
-
-      // Draw bounding boxes and labels
       drawRect(obj, ctx);
     }
   };
 
   useEffect(() => {
-    runCoco(); // Call the runCoco function once on mount
-  }, [runCoco]); // Add runCoco as a dependency
+    runCoco();
+  }, [runCoco]);
+
+  const switchCamera = () => {
+    setIsBackCamera(prev => !prev);
+  };
 
   return (
     <div className="App">
@@ -98,17 +86,12 @@ function Camera() {
           ref={webcamRef}
           muted={true}
           onLoadedMetadata={() => {
-            // Wait for video metadata to load before setting canvas size
             const video = webcamRef.current.video;
-            const videoWidth = video.videoWidth;
-            const videoHeight = video.videoHeight;
-
-            console.log("Video Dimensions:", videoWidth, videoHeight); // Debugging log
-            canvasRef.current.width = videoWidth;
-            canvasRef.current.height = videoHeight;
+            canvasRef.current.width = video.videoWidth;
+            canvasRef.current.height = video.videoHeight;
           }}
           videoConstraints={{
-            facingMode: "user", // Use front camera (can be modified for back camera)
+            facingMode: isBackCamera ? "environment" : "user"
           }}
           style={{
             position: "absolute",
@@ -116,7 +99,7 @@ function Camera() {
             left: 0,
             width: dimensions.width,
             height: dimensions.height,
-            objectFit: "cover", // Ensures the webcam feed covers the entire screen
+            objectFit: "cover",
             zIndex: 9,
           }}
         />
@@ -129,12 +112,56 @@ function Camera() {
             left: 0,
             width: dimensions.width,
             height: dimensions.height,
-            zIndex: 10, // Ensure canvas is above the webcam feed
+            zIndex: 10,
           }}
         />
+
+        {/* Control Buttons */}
+        <div style={{
+          position: "fixed",
+          bottom: 20,
+          right: 20,
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          zIndex: 11
+        }}>
+          <button 
+            onClick={switchCamera}
+            style={buttonStyle}
+            title="Switch Camera"
+          >
+            🔄
+          </button>
+          
+          <button 
+            onClick={() => navigate("/home")}
+            style={buttonStyle}
+            title="Go to Home"
+          >
+            🏠
+          </button>
+        </div>
       </header>
     </div>
   );
 }
 
+const buttonStyle = {
+  width: 50,
+  height: 50,
+  borderRadius: "50%",
+  border: "none",
+  backgroundColor: "rgba(255, 255, 255, 0.7)",
+  cursor: "pointer",
+  boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  transition: "transform 0.2s",
+  fontSize: "20px",
+};
+
 export default Camera;
+
+
