@@ -6,7 +6,7 @@
 
 
 .navbar {
-  background-color: #fff;
+  background-color: #e98df1;
   padding : .7rem;
   box-sizing: border-box;
   position: fixed;
@@ -35,7 +35,7 @@ h1 {
 }
 
 .active {
-  background-color: #999;
+  background-color: #f5a5ef;
 }
 
 .navbar img{

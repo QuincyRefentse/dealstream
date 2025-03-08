@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import home from './assets/home.svg';
-import rss from './assets/rss.svg'; // You can keep this icon, or change it to something related to reports
-import user from './assets/user.svg'; // You can keep this icon, or change it to something related to cameras
+import camera from './assets/camera.svg'; // You can keep this icon, or change it to something related to reports
+import report from './assets/report.svg'; // You can keep this icon, or change it to something related to cameras
 import './App.css';
 import Home from './pages/Home'; // Import Home page
 import Report from './pages/Reports'; // Import Report page
@@ -35,7 +35,7 @@ function App() {
             onClick={() => setActive(1)}
           >
             <Link to="/reports"> {/* Link to Reports route */}
-              <img src={rss} alt="Reports" />
+              <img src={report} alt="Reports" />
             </Link>
           </div>
 
@@ -44,7 +44,7 @@ function App() {
             onClick={() => setActive(2)}
           >
             <Link to="/camera"> {/* Link to Camera route */}
-              <img src={user} alt="Camera" />
+              <img src={camera} alt="Camera" />
             </Link>
           </div>
         </nav>
