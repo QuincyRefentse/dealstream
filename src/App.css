@@ -42,3 +42,15 @@ h1 {
   width: 100%;
   height: 100%;
 }
+/* Positioning the auth-buttons in the top-left corner */
+.auth-buttons {
+  position: absolute; /* Use absolute positioning */
+  top: 10px;          /* Position 10px from the top of the page */
+  left: 10px;         /* Position 10px from the left of the page */
+  z-index: 1000;      /* Ensure the buttons appear on top of other content */
+}
+
+/* Optional: Customize the look of the buttons */
+.auth-buttons button {
+  margin-right: 10px;
+}

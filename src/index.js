@@ -3,15 +3,27 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ClerkProvider } from '@clerk/clerk-react';
+
+// Access the Publishable Key using the CRA environment variable
+const PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
+
+// Log it to make sure it's being picked up
+console.log('Publishable Key: >>>', PUBLISHABLE_KEY);
+//process.env.REACT_APP_CLERK_PUBLISHABLE_KEY
+console.log("Publishable Key: ", process.env.REACT_APP_CLERK_PUBLISHABLE_KEY);
+
+
+// Check if the key exists and throw an error if it's missing
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Publishable Key");
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  
+  <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
     <App />
-  
+  </ClerkProvider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
