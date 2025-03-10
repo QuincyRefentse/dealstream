@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; 
 
 const CommodityList = () => {
   const [commodities, setCommodities] = useState([]);
@@ -25,38 +25,35 @@ const CommodityList = () => {
     };
 
     fetchCommodities();
-  }, []);
+  }, []); // Run only once when the component mounts
 
-  // Handle search filter
+  // Handle search filter (now depends only on searchQuery)
   useEffect(() => {
-    if (searchQuery) {
-      setFilteredCommodities(
-        commodities.filter((commodity) =>
+    const filtered = searchQuery
+      ? commodities.filter((commodity) =>
           commodity.name.toLowerCase().includes(searchQuery.toLowerCase())
         )
-      );
-    } else {
-      setFilteredCommodities(commodities);
-    }
-  }, [searchQuery, commodities]);
+      : commodities;
 
-  // Sort commodities based on price
-  useEffect(() => {
-    const sortedCommodities = [...filteredCommodities].sort((a, b) => {
-      return sortOrder === "asc" ? a.price - b.price : b.price - a.price;
-    });
-    setFilteredCommodities(sortedCommodities);
-  }, [sortOrder, filteredCommodities]);
+    setFilteredCommodities(filtered);
+  }, [searchQuery, commodities]); // Only trigger when searchQuery or commodities changes
 
-  // Handle sorting
+  // Handle sorting based on price (only triggers on sortOrder change)
   const handleSort = () => {
-    setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    setSortOrder((prev) => {
+      const newSortOrder = prev === "asc" ? "desc" : "asc";
+      const sortedCommodities = [...filteredCommodities].sort((a, b) => {
+        return newSortOrder === "asc" ? a.price - b.price : b.price - a.price;
+      });
+      setFilteredCommodities(sortedCommodities);
+      return newSortOrder;
+    });
   };
 
   return (
     <div style={{ padding: "20px", background: "#f1f1f1" }}>
       {/* Title */}
-      <h1 style={{ textAlign: "center", marginBottom: "20px", fontSize: "2rem",color: "black" }}>
+      <h1 style={{ textAlign: "center", marginBottom: "20px", fontSize: "2rem", color: "black" }}>
         Commodities
       </h1>
 
