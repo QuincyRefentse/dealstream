@@ -24,23 +24,47 @@ const Reports = () => {
     return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
   };
 
+  // Clear the detection reports
+  const clearReports = () => {
+    setDetections([]); // Clear the state
+    localStorage.removeItem('detectionReports'); // Remove data from localStorage
+  };
+
   return (
     <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h1>Detection Reports</h1>
-        <button 
-          onClick={() => navigate(-1)}
-          style={{
-            padding: '10px 20px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer'
-          }}
-        >
-          Back to Camera
-        </button>
+
+        {/* Button container for both "Back to Camera" and "Clear Reports" */}
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button 
+            onClick={() => navigate(-1)}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
+          >
+            Back to Camera
+          </button>
+
+          <button
+            onClick={clearReports}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#dc3545',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
+          >
+            Clear Reports
+          </button>
+        </div>
       </div>
 
       {detections.length === 0 ? (
