@@ -1,0 +1,89 @@
+/* Basic reset for margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Container for the upload form */
+.document-upload-container {
+    font-family: 'Arial', sans-serif;
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styling */
+.document-upload-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2e3a59;
+}
+
+/* Form styling */
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Label and input styling */
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.file-input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #555;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.file-input:focus {
+    border-color: #5e72e4;
+    outline: none;
+}
+
+/* Button styling */
+.submit-button {
+    padding: 12px 20px;
+    background-color: #5e72e4;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #4c63d0;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 600px) {
+    .document-upload-container {
+        padding: 15px;
+    }
+
+    .submit-button {
+        padding: 10px 15px;
+    }
+
+    .input-group label {
+        font-size: 14px;
+    }
+}

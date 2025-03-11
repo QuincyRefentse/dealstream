@@ -1,7 +1,7 @@
 import React from "react";
 import CommodityList from "../components/CommodityList";
 import BuySellForm from "../components/BuySellForm";
-import NegotiationSection from "../components/NegotiationSection";
+import NegotiationSection from "../components/DealSheet";
 
 const Home = ({balance, setBalance, updateAssets, assets }) => {
   return (
