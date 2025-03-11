@@ -4,23 +4,55 @@ import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-ro
 import home from './assets/home.svg';
 import camera from './assets/camera.svg'; 
 import report from './assets/report.svg'; 
+import vault from './assets/vault.svg'; // Use vault for assets button
 import './App.css';
 import Home from './pages/Home'; 
 import Report from './pages/Reports'; 
 import Camera from './pages/Camera'; 
+import BuySellForm from './components/BuySellForm'; // Import BuySellForm component
+import Assets from './components/Assets'; // Import the Assets page
 
 function App() {
   const [active, setActive] = useState(0);
+  const [balance, setBalance] = useState(200); // Default account balance of $200
+  const [assets, setAssets] = useState([
+    { name: 'Silver', key: 'XAG', quantity: 0, price: 25.5 },
+    { name: 'Gold', key: 'XAU', quantity: 0, price: 1800 },
+    { name: 'Aluminium', key: 'ALU', quantity: 0, price: 2.3 },
+    { name: 'Coal', key: 'COAL', quantity: 0, price: 50 },
+    { name: 'Natural Gas', key: 'NG', quantity: 0, price: 3.8 },
+  ]); // Sample assets
+
+  const updateAssets = (commodity, action, quantity, price) => {
+    setAssets(prevAssets => {
+      return prevAssets.map(asset => {
+        if (asset.key === commodity) {
+          const updatedQuantity = action === 'buy' ? asset.quantity + quantity : asset.quantity - quantity;
+          return { ...asset, quantity: updatedQuantity };
+        }
+        return asset;
+      });
+    });
+
+    // Update balance when buying/selling
+    const totalCost = price * quantity;
+    if (action === 'buy') {
+      setBalance(prevBalance => prevBalance - totalCost);
+    } else if (action === 'sell') {
+      setBalance(prevBalance => prevBalance + totalCost);
+    }
+  };
 
   return (
     <Router>
       <div className="App">
         <div>
           <h1>
-            {['', '', ''][active]}
+            {active === 0 ? "Home" : active === 1 ? "Reports" : "Camera"}
           </h1>
         </div>
 
+        {/* Navbar with active state */}
         <nav className="navbar">
           <div
             className={active === 0 ? 'active' : ''}
@@ -50,32 +82,52 @@ function App() {
           </div>
         </nav>
 
-        {/* Authentication Buttons */}
+        {/* Authentication buttons */}
         <div className="auth-buttons">
           <SignedOut>
-            {/* Sign-In button, when the user is not signed in */}
             <SignInButton>
               <button>Sign In</button>
             </SignInButton>
           </SignedOut>
 
           <SignedIn>
-            {/* UserButton, shown when the user is signed in */}
             <UserButton />
           </SignedIn>
         </div>
 
+        {/* Account balance display */}
+        <div className="account-balance">
+          Balance: ${balance.toFixed(2)}
+        </div>
+
+        {/* Assets button to go to assets page */}
+        <div className="assets-button">
+          <Link to="/assets">
+            <button className="assets-btn">
+              <img src={vault} alt="Assets" className="assets-icon" />
+              <span className="assets-text">Assets</span>
+            </button>
+          </Link>
+        </div>
+
+        {/* Routing setup */}
         <div>
-          {/* Routes for the app */}
           <Routes>
             <Route path="/home" element={<Home />} />
             <Route path="/reports" element={<Report />} />
             <Route path="/camera" element={<Camera />} />
 
-            {/* Redirecting to home by default */}
-            <Route path="/" element={<Navigate to="/home" />} />
+            {/* Pass balance and assets as props */}
+            <Route
+              path="/buy-sell"
+              element={<BuySellForm balance={balance} setBalance={setBalance} updateAssets={updateAssets} assets={assets} />}
+            />
 
-            {/* Optionally, add a fallback for unknown routes */}
+            {/* Route for Assets page */}
+            <Route path="/assets" element={<Assets assets={assets} />} />
+
+            {/* Default route to home */}
+            <Route path="/" element={<Navigate to="/home" />} />
             <Route path="*" element={<div>404 - Page Not Found</div>} />
           </Routes>
         </div>

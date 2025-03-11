@@ -1,0 +1,74 @@
+/* General container for the assets section */
+.assets-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  
+  /* Heading for the assets section */
+  .assets-heading {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Styling the list of assets */
+  .assets-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .asset-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .asset-item:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styling for the asset details */
+  .asset-details {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  
+  .asset-name {
+    font-weight: 700;
+    color: #333;
+  }
+  
+  .asset-quantity {
+    color: #007bff;
+    margin-left: 5px;
+  }
+  
+  .asset-price {
+    color: #28a745;
+    margin-left: 5px;
+  }
+  
+  /* Styling for the total value of the asset */
+  .asset-total {
+    font-size: 14px;
+    color: #777;
+    font-weight: 500;
+  }
+  
+  .asset-total-value {
+    font-weight: 700;
+    color: #ff6f61;
+  }
+  
+  

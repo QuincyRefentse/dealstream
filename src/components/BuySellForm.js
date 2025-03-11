@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import './BuySellForm.css'; // Import the CSS for styling
 
-const BuySellForm = () => {
+const BuySellForm = ({ balance, setBalance, updateAssets, assets }) => {
   const [commoditiesData, setCommoditiesData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,7 +9,8 @@ const BuySellForm = () => {
   const [quantity, setQuantity] = useState("");    // Quantity in KG
   const [price, setPrice] = useState("");          // Price per unit
   const [action, setAction] = useState("buy");     // "buy" or "sell"
-  
+  const [customQuantity, setCustomQuantity] = useState(""); // Store the custom quantity if entered
+
   const API_KEY = '7wfmexl3nzz294rze01ja0d8m0yg9s1g0z3bhif6nl1y6ycls40g1e2vya06';
   const TARGET_COMMODITIES = [
     { name: 'Silver', key: 'XAG' },
@@ -48,13 +49,57 @@ const BuySellForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Send this data to the API to process the transaction
-    console.log(`Action: ${action}, Commodity: ${commodity}, Quantity: ${quantity}, Price: ${price}`);
+    const totalCost = price * quantity;
+
+    if (action === "buy") {
+      if (totalCost <= balance) {
+        // Update balance and assets
+        setBalance(balance - totalCost);
+        updateAssets(commodity, action, quantity, price); // Update assets
+        alert(`You bought ${quantity} units of ${commodity}`);
+      } else {
+        alert("Insufficient balance for the transaction.");
+      }
+    } else if (action === "sell") {
+      // You can add further checks to ensure the user has enough of the asset to sell
+      const assetToSell = assets.find((asset) => asset.key === commodity);
+      if (assetToSell && assetToSell.quantity >= quantity) {
+        updateAssets(commodity, action, quantity, price); // Update assets
+        const totalSaleValue = price * quantity;
+        setBalance(balance + totalSaleValue);
+        alert(`You sold ${quantity} units of ${commodity}`);
+      } else {
+        alert("You don't have enough of this asset to sell.");
+      }
+    }
   };
 
-  // Get price for the selected commodity
   const selectedCommodity = TARGET_COMMODITIES.find((c) => c.key === commodity);
   const selectedPrice = selectedCommodity ? commoditiesData.rates[commodity] : null;
+
+  const handleQuantityChange = (e) => {
+    const value = e.target.value;
+    // Ensure that the quantity is a positive number
+    if (value === '' || /^[0-9]*\.?[0-9]+$/.test(value)) {
+      setQuantity(value);
+    }
+  };
+
+  const handleCustomQuantityChange = (e) => {
+    const value = e.target.value;
+    // Ensure that the custom quantity is a positive number
+    if (value === '' || /^[0-9]*\.?[0-9]+$/.test(value)) {
+      setCustomQuantity(value);
+    }
+  };
+
+  const handlePriceChange = (e) => {
+    const value = e.target.value;
+    // Ensure that the price is a positive number
+    if (value === '' || /^[0-9]*\.?[0-9]+$/.test(value)) {
+      setPrice(value);
+    }
+  };
 
   return (
     <div className="buy-sell-form-container">
@@ -78,34 +123,55 @@ const BuySellForm = () => {
           </div>
         )}
         <label>
-          Quantity in KILOGRAMS (KG):
-          <input
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            min="1"
-            required
-          />
+          Quantity in GRAMS:
+          <select value={quantity} onChange={handleQuantityChange}>
+            <option value="">Select Quantity</option>
+            <option value="100">100 grams</option>
+            <option value="250">250 grams</option>
+            <option value="500">500 grams</option>
+            <option value="1000">1 kilogram (1000 grams)</option>
+            <option value="2000">2 kilograms (2000 grams)</option>
+            <option value="5000">5 kilograms (5000 grams)</option>
+            <option value="custom">Custom</option>
+          </select>
         </label>
+        <br />
+        {quantity === "custom" && (
+          <label>
+            Enter Custom Quantity (grams):
+            <input
+              type="number"
+              value={customQuantity}
+              onChange={handleCustomQuantityChange}
+              min="1"
+              required
+            />
+          </label>
+        )}
         <br />
         <label>
           Price per unit (USD):
           <input
             type="number"
             value={price || selectedPrice || ''}
-            onChange={(e) => setPrice(e.target.value)}
-            min="0.01"
-            step="0.01"
+            onChange={handlePriceChange} // Use custom handler for price
+            min="0.01"  // Allow decimal values greater than 0
+            step="0.01"  // Allow decimal step
             required
             disabled={!!selectedPrice}  // Disable price input if price is already fetched
           />
         </label>
         <br />
-        <button type="submit">{action === "buy" ? "Buy" : "Sell"}</button>
+        <button
+          type="submit"
+          className={action === "buy" ? "buy-btn" : "sell-btn"} // Conditionally apply the class based on the action
+        >
+          {action === "buy" ? "Buy" : "Sell"}
+        </button>
       </form>
 
       <div style={{ marginTop: "10px" }}>
-        <button onClick={() => setAction(action === "buy" ? "sell" : "buy")}>
+        <button onClick={() => setAction(action === "buy" ? "sell" : "buy")} className="switch-action-btn">
           Switch to {action === "buy" ? "Sell" : "Buy"}
         </button>
       </div>
