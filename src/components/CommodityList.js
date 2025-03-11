@@ -15,6 +15,7 @@ const CommoditiesList = () => {
     { name: 'Natural Gas', key: 'NG' }
   ];
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,7 +38,7 @@ const CommoditiesList = () => {
     };
 
     fetchData();
-  }, []);
+  }, []); // Empty dependency array as TARGET_COMMODITIES doesn't change
 
   if (loading) return <div className="loading">Loading commodities data...</div>;
   if (error) return <div className="error">Error: {error}</div>;
