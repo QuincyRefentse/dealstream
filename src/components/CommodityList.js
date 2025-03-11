@@ -1,116 +1,72 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from 'react';
+import './CommodityList.css'; // Make sure to style your components
 
-const CommodityList = () => {
-  const [commodities, setCommodities] = useState([]);
-  const [filteredCommodities, setFilteredCommodities] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [isLoading, setIsLoading] = useState(true);
+const CommoditiesList = () => {
+  const [commoditiesData, setCommoditiesData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch commodities data from API
+  const API_KEY = '7wfmexl3nzz294rze01ja0d8m0yg9s1g0z3bhif6nl1y6ycls40g1e2vya06';
+  const TARGET_COMMODITIES = [
+    { name: 'Silver', key: 'XAG' },
+    { name: 'Gold', key: 'XAU' },
+    { name: 'Aluminium', key: 'ALU' },
+    { name: 'Coal', key: 'COAL' },
+    { name: 'Natural Gas', key: 'NG' }
+  ];
+
   useEffect(() => {
-    const fetchCommodities = async () => {
-      setIsLoading(true); // Start loading
+    const fetchData = async () => {
       try {
-        const response = await fetch("https://api.example.com/commodities");
+        const symbols = TARGET_COMMODITIES.map(c => c.key).join(',');
+        const response = await fetch(
+          `https://commodities-api.com/api/latest?access_key=${API_KEY}&base=USD&symbols=${symbols}`
+        );
+
+        if (!response.ok) throw new Error('Network response was not ok');
+        
         const data = await response.json();
-        setCommodities(data);
-        setFilteredCommodities(data); // Initially show all commodities
-      } catch (error) {
-        setError("Error fetching commodities data. Please try again.");
-      } finally {
-        setIsLoading(false); // End loading
+        if (!data.data.success) throw new Error('Failed to fetch commodity data');
+        
+        setCommoditiesData(data.data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
       }
     };
 
-    fetchCommodities();
-  }, []); // Run only once when the component mounts
+    fetchData();
+  }, []);
 
-  // Handle search filter (now depends only on searchQuery)
-  useEffect(() => {
-    const filtered = searchQuery
-      ? commodities.filter((commodity) =>
-          commodity.name.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      : commodities;
-
-    setFilteredCommodities(filtered);
-  }, [searchQuery, commodities]); // Only trigger when searchQuery or commodities changes
-
-  // Handle sorting based on price (only triggers on sortOrder change)
-  const handleSort = () => {
-    setSortOrder((prev) => {
-      const newSortOrder = prev === "asc" ? "desc" : "asc";
-      const sortedCommodities = [...filteredCommodities].sort((a, b) => {
-        return newSortOrder === "asc" ? a.price - b.price : b.price - a.price;
-      });
-      setFilteredCommodities(sortedCommodities);
-      return newSortOrder;
-    });
-  };
+  if (loading) return <div className="loading">Loading commodities data...</div>;
+  if (error) return <div className="error">Error: {error}</div>;
 
   return (
-    <div style={{ padding: "20px", background: "#f1f1f1" }}>
-      {/* Title */}
-      <h1 style={{ textAlign: "center", marginBottom: "20px", fontSize: "2rem", color: "black" }}>
-        Commodities
-      </h1>
+    <div className="commodities-container">
+      <div className="header">
+        <h2>Commodities Prices</h2>
+        <div className="metadata">
+          <span>Date: {commoditiesData.date}</span>
+          <span>Base Currency: {commoditiesData.base}</span>
+        </div>
+      </div>
 
-      {/* Search Input */}
-      <input
-        type="text"
-        placeholder="Search for a commodity"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        style={{ padding: "8px", marginBottom: "10px", width: "100%" }}
-      />
-
-      {/* Sort Button */}
-      <button
-        onClick={handleSort}
-        style={{
-          padding: "8px 16px",
-          background: "#4CAF50",
-          color: "white",
-          border: "none",
-          cursor: "pointer",
-          marginBottom: "20px",
-        }}
-      >
-        Sort by Price ({sortOrder === "asc" ? "Ascending" : "Descending"})
-      </button>
-
-      {/* Loading and Error Handling */}
-      {isLoading && <div>Loading...</div>}
-      {error && <div style={{ color: "red" }}>{error}</div>}
-
-      {/* Commodity Cards */}
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-around" }}>
-        {filteredCommodities.map((commodity) => (
-          <div
-            key={commodity.name}
-            style={{
-              textAlign: "center",
-              margin: "10px",
-              padding: "20px",
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-              backgroundColor: "#fff",
-              width: "200px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            <h3 style={{ marginBottom: "10px" }}>{commodity.name}</h3>
-            <p
-              style={{
-                fontSize: "20px",
-                fontWeight: "bold",
-                color: commodity.price > 1000 ? "red" : "green", // Price color based on threshold
-              }}
-            >
-              ${commodity.price}
-            </p>
+      <div className="commodities-grid">
+        {TARGET_COMMODITIES.map((commodity) => (
+          <div key={commodity.key} className="commodity-card">
+            <h3>{commodity.name}</h3>
+            <div className="commodity-info">
+              <div className="price">
+                {/* Format Gold (XAU) to 4 decimal places */}
+                {commodity.key === 'XAU' ? 
+                  `$${commoditiesData.rates[commodity.key]?.toFixed(4) || 'N/A'}` :
+                  `$${commoditiesData.rates[commodity.key]?.toFixed(2) || 'N/A'}`}
+              </div>
+              <div className="unit">
+                {commoditiesData.unit[commodity.key] || 'Unit not available'}
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -118,4 +74,4 @@ const CommodityList = () => {
   );
 };
 
-export default CommodityList;
+export default CommoditiesList;
