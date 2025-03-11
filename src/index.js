@@ -8,10 +8,7 @@ import { ClerkProvider } from '@clerk/clerk-react';
 // Access the Publishable Key using the CRA environment variable
 const PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
 
-// Log it to make sure it's being picked up
-console.log('Publishable Key: >>>', PUBLISHABLE_KEY);
-//process.env.REACT_APP_CLERK_PUBLISHABLE_KEY
-console.log("Publishable Key: ", process.env.REACT_APP_CLERK_PUBLISHABLE_KEY);
+
 
 
 // Check if the key exists and throw an error if it's missing
