@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './CommodityList.css'; // Make sure to style your components
+import './CommodityList.css';
 
 const CommoditiesList = () => {
   const [commoditiesData, setCommoditiesData] = useState(null);
@@ -15,7 +15,6 @@ const CommoditiesList = () => {
     { name: 'Natural Gas', key: 'NG' }
   ];
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,7 +37,7 @@ const CommoditiesList = () => {
     };
 
     fetchData();
-  }, []); // Empty dependency array as TARGET_COMMODITIES doesn't change
+  }, []);
 
   if (loading) return <div className="loading">Loading commodities data...</div>;
   if (error) return <div className="error">Error: {error}</div>;
@@ -55,20 +54,37 @@ const CommoditiesList = () => {
 
       <div className="commodities-grid">
         {TARGET_COMMODITIES.map((commodity) => (
-          <div key={commodity.key} className="commodity-card">
-            <h3>{commodity.name}</h3>
-            <div className="commodity-info">
-              <div className="price">
-                {/* Format Gold (XAU) to 4 decimal places */}
-                {commodity.key === 'XAU' ? 
-                  `$${commoditiesData.rates[commodity.key]?.toFixed(4) || 'N/A'}` :
-                  `$${commoditiesData.rates[commodity.key]?.toFixed(2) || 'N/A'}`}
-              </div>
-              <div className="unit">
-                {commoditiesData.unit[commodity.key] || 'Unit not available'}
+          <React.Fragment key={commodity.key}>
+            
+            <div className="commodity-card">
+              <h3>{commodity.name}</h3>
+              <div className="commodity-info">
+                <div className="price">
+                  {`$${commoditiesData.rates[`USD${commodity.key}`]?.toFixed(2) || 'N/A'}`}
+                </div>
+                <div className="unit">
+                  {commoditiesData.unit[commodity.key] || 'Unit not available'}
+                </div>
               </div>
             </div>
-          </div>
+
+             
+            {/*
+            <div className="commodity-card">
+              <h3>USD per {commodity.name}</h3>
+              <div className="commodity-info">
+                <div className="price">
+                  {commodity.key === 'XAU' ? 
+                    `${commoditiesData.rates[commodity.key]?.toFixed(6) || 'N/A'}` :
+                    `${commoditiesData.rates[commodity.key]?.toFixed(4) || 'N/A'}`}
+                </div>
+                <div className="unit">
+                  per USD
+                </div>
+              </div>
+            </div>
+            */}
+          </React.Fragment>
         ))}
       </div>
     </div>

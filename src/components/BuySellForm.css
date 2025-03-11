@@ -94,58 +94,6 @@
 }
 
 /* Switch action button (buy/sell toggle) */
-.buy-sell-form-container button[type="button"] {
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-}
-
-.buy-sell-form-container button[type="button"]:hover {
-    background-color: #0056b3;
-}
-
-/* Styling for the form when loading or in error state */
-.loading, .error {
-    text-align: center;
-    color: #888;
-    font-size: 18px;
-    margin-top: 20px;
-}
-
-/* Option for an error or success message */
-.error {
-    color: #e74c3c;
-}
-
-.loading {
-    color: #f39c12;
-}
-
-/* Responsive styling for smaller screens */
-@media (max-width: 600px) {
-    .buy-sell-form-container {
-        padding: 15px;
-        margin-top: 10px;
-    }
-
-    .buy-sell-form-container h2 {
-        font-size: 20px;
-    }
-
-    .buy-sell-form-container button[type="submit"],
-    .buy-sell-form-container button[type="button"] {
-        font-size: 16px;
-    }
-}
-
-/* Styling for the "Switch to Buy/Sell" button */
 .buy-sell-form-container .switch-action-btn {
     width: 100%;
     padding: 12px;
@@ -160,26 +108,109 @@
     transition: all 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin-top: 10px;
-  }
-  
-  /* Hover effect */
-  .buy-sell-form-container .switch-action-btn:hover {
+}
+
+/* Hover effect */
+.buy-sell-form-container .switch-action-btn:hover {
     background-color: #e67e22; /* Slightly darker orange when hovered */
     transform: translateY(-2px); /* Slight lift effect on hover */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
-  }
-  
-  /* Active state on button click */
-  .buy-sell-form-container .switch-action-btn:active {
+}
+
+/* Active state on button click */
+.buy-sell-form-container .switch-action-btn:active {
     transform: translateY(1px); /* Button moves slightly down when clicked */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Add responsive behavior */
-  @media (max-width: 600px) {
+}
+
+/* Add responsive behavior */
+@media (max-width: 600px) {
     .buy-sell-form-container .switch-action-btn {
-      font-size: 14px; /* Adjust font size for smaller screens */
-      padding: 10px;
+        font-size: 14px; /* Adjust font size for smaller screens */
+        padding: 10px;
     }
-  }
-  
+}
+
+/* Styles for Buy and Sell Buttons */
+.buy-btn {
+    background-color: #28a745; /* Green for Buy */
+    color: white;
+}
+
+.sell-btn {
+    background-color: #dc3545; /* Red for Sell */
+    color: white;
+}
+
+/* Styling for the switch button (Buy/Sell toggle) */
+.switch-btn {
+    margin-top: 10px;
+    background-color: #ccc;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.switch-btn:hover {
+    background-color: #bbb;
+}
+
+/* Add more styling as necessary */
+/* Switch action button (buy/sell toggle) */
+.buy-sell-form-container .switch-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: capitalize;
+    background-color: #b5b6af; /* Green for Buy */
+    color: white;
+    border: none;
+    border-radius: 8px; /* Rounded corners for a more modern look */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Hover effect */
+.buy-sell-form-container .switch-btn:hover {
+    background-color: #f3e304; /* Slightly darker green on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+/* Active state on button click */
+.buy-sell-form-container .switch-btn:active {
+    transform: translateY(1px); /* Button moves slightly down when clicked */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the Switch Action text */
+.buy-sell-form-container .switch-btn {
+    font-size: 16px;
+    text-transform: uppercase; /* Capitalize button text */
+    letter-spacing: 1px; /* Add a slight space between letters for a modern touch */
+    font-weight: bold; /* Bold text for better readability */
+    text-align: center;
+}
+
+/* Switch button when switching to 'Sell' */
+.buy-sell-form-container .switch-btn.sell-action {
+    background-color: #dc3545; /* Red for Sell */
+}
+
+/* Hover effect for the 'Sell' action */
+.buy-sell-form-container .switch-btn.sell-action:hover {
+    background-color: #c82333; /* Darker red for 'Sell' hover */
+}
+
+/* Add responsive behavior */
+@media (max-width: 600px) {
+    .buy-sell-form-container .switch-btn {
+        font-size: 14px; /* Adjust font size for smaller screens */
+        padding: 12px;
+    }
+}

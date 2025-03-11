@@ -14,7 +14,7 @@ const Home = ({balance, setBalance, updateAssets, assets }) => {
         updateAssets={updateAssets} 
         assets={assets} 
       />
-      <NegotiationSection />
+      
     </div>
   );
 };
