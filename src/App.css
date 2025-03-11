@@ -111,9 +111,9 @@ h1 {
 }
 
 .assets-icon {
-  width: 20px; /* Adjust the icon size */
-  height: 20px;
-  margin-right: 8px; /* Space between icon and text */
+  width: 30px; /* Increase the size */
+  height: 30px;
+  margin-right: 12px; 
 }
 
 .assets-text {

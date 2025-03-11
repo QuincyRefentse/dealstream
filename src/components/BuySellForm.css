@@ -83,15 +83,7 @@
     background-color: #dc3545; /* Red background for sell */
 }
 
-/* Hover effect for the submit button */
-.buy-sell-form-container button[type="submit"]:hover {
-    background-color: #218838; /* Darker green for buy hover */
-}
 
-/* Darker red for sell hover */
-.buy-sell-form-container .sell-btn:hover {
-    background-color: #c82333; /* Darker red for sell hover */
-}
 
 /* Switch action button (buy/sell toggle) */
 .buy-sell-form-container .switch-action-btn {

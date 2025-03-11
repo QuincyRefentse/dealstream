@@ -69,21 +69,6 @@ const CommoditiesList = () => {
             </div>
 
              
-            {/*
-            <div className="commodity-card">
-              <h3>USD per {commodity.name}</h3>
-              <div className="commodity-info">
-                <div className="price">
-                  {commodity.key === 'XAU' ? 
-                    `${commoditiesData.rates[commodity.key]?.toFixed(6) || 'N/A'}` :
-                    `${commoditiesData.rates[commodity.key]?.toFixed(4) || 'N/A'}`}
-                </div>
-                <div className="unit">
-                  per USD
-                </div>
-              </div>
-            </div>
-            */}
           </React.Fragment>
         ))}
       </div>
