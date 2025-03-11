@@ -37,7 +37,11 @@ function App() {
     // Update balance when buying/selling
     const totalCost = price * quantity;
     if (action === 'buy') {
-      setBalance(prevBalance => prevBalance - totalCost);
+      setBalance(prevBalance => {
+        const newBalance = prevBalance - totalCost;
+        console.log(`Bought ${quantity} units of ${commodity} for $${totalCost}. New balance: $${newBalance.toFixed(2)}`);
+        return newBalance;
+      });
     } else if (action === 'sell') {
       setBalance(prevBalance => prevBalance + totalCost);
     }
@@ -113,7 +117,10 @@ function App() {
         {/* Routing setup */}
         <div>
           <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route
+              path="/home"
+              element={<Home balance={balance} setBalance={setBalance} updateAssets={updateAssets} assets={assets} />}
+            />
             <Route path="/reports" element={<Report />} />
             <Route path="/camera" element={<Camera />} />
 
