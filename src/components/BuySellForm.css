@@ -1,0 +1,134 @@
+/* Overall container for the Buy/Sell Form */
+.buy-sell-form-container {
+    padding: 20px;
+    background: #f4f4f9;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 20px auto;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  /* Heading styles */
+  .buy-sell-form-container h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Label for form inputs */
+  .buy-sell-form-container label {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #555;
+    display: block;
+    font-size: 16px;
+  }
+  
+  /* Form field styles */
+  .buy-sell-form-container select,
+  .buy-sell-form-container input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+  
+  /* Input field styling for numbers */
+  .buy-sell-form-container input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  
+  /* Disable input when price is fetched from API */
+  .buy-sell-form-container input[disabled] {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+  }
+  
+  /* Styling for the price display */
+  .buy-sell-form-container .price-info {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #1d7a1d;
+    text-align: center;
+  }
+  
+  /* Submit button styling */
+  .buy-sell-form-container button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background-color: #28a745;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+  }
+  
+  /* Hover effect for the submit button */
+  .buy-sell-form-container button[type="submit"]:hover {
+    background-color: #218838;
+  }
+  
+  /* Switch action button (buy/sell toggle) */
+  .buy-sell-form-container button[type="button"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Hover effect for the switch button */
+  .buy-sell-form-container button[type="button"]:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Styling for the form when loading or in error state */
+  .loading, .error {
+    text-align: center;
+    color: #888;
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  
+  /* Option for an error or success message */
+  .error {
+    color: #e74c3c;
+  }
+  
+  .loading {
+    color: #f39c12;
+  }
+  
+  /* Responsive styling for smaller screens */
+  @media (max-width: 600px) {
+    .buy-sell-form-container {
+      padding: 15px;
+      margin-top: 10px;
+    }
+  
+    .buy-sell-form-container h2 {
+      font-size: 20px;
+    }
+  
+    .buy-sell-form-container button[type="submit"],
+    .buy-sell-form-container button[type="button"] {
+      font-size: 16px;
+    }
+  }
+  
