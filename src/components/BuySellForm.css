@@ -83,6 +83,37 @@
     background-color: #dc3545; /* Red background for sell */
 }
 
+.toggle-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .toggle-btn {
+    background-color: #ccc;
+    color: #333;
+    border: 2px solid #999;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .toggle-btn:hover {
+    background-color: #bbb;
+    transform: scale(1.05);
+  }
+  
+  .toggle-btn:focus {
+    outline: none;
+  }
+  
+  .toggle-btn:active {
+    background-color: #aaa;
+  }
+  
 
 
 /* Switch action button (buy/sell toggle) */

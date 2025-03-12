@@ -18,7 +18,7 @@ function App() {
   const [assets, setAssets] = useState([
     { name: 'Silver', key: 'XAG', quantity: 0, price: 0 },
     { name: 'Gold', key: 'XAU', quantity: 0, price: 0 },
-    { name: 'Aluminium', key: 'ALU', quantity: 0, price: 0 },
+    { name: 'Chrome', key: 'CR99MIN', quantity: 0, price: 0 },
     { name: 'Coal', key: 'COAL', quantity: 0, price: 0 },
     { name: 'Natural Gas', key: 'NG', quantity: 0, price: 0 }
   ]);

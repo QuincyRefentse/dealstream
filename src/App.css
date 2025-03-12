@@ -120,6 +120,14 @@ h1 {
   text-transform: capitalize;
 }
 
+#chatbase-widget-container {
+  position: absolute;
+  top: 60px; /* Adjust this value to control the vertical position */
+  left: 10px; /* Controls the horizontal position */
+  z-index: 9999; /* Ensure it's above other content */
+}
+
+
 /* Additional responsiveness to adjust spacing on smaller screens */
 @media (max-width: 600px) {
   .account-balance {

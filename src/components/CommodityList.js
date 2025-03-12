@@ -10,7 +10,7 @@ const CommoditiesList = () => {
   const TARGET_COMMODITIES = [
     { name: 'Silver', key: 'XAG' },
     { name: 'Gold', key: 'XAU' },
-    { name: 'Aluminium', key: 'ALU' },
+    { name: 'Chrome', key: 'CR99MIN' },
     { name: 'Coal', key: 'COAL' },
     { name: 'Natural Gas', key: 'NG' }
   ];
