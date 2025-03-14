@@ -1,8 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// eslint-disable-next-line
 import * as cocossd from "@tensorflow-models/coco-ssd";
-// eslint-disable-next-line
 import Webcam from "react-webcam";
 import "./App.css";
 import { drawRect } from "./utility";
