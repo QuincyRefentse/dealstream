@@ -1,3 +1,4 @@
+/* Global styles for the App */
 .App {
   text-align: center;
   background-color: #333;
@@ -5,6 +6,7 @@
   overflow: hidden; /* Prevent scrollbars from appearing */
 }
 
+/* Navbar style */
 .navbar {
   background-color: #e98df1;
   padding: .7rem;
@@ -43,17 +45,61 @@ h1 {
   height: 100%;
 }
 
-/* Positioning the auth-buttons in the top-left corner */
+/* Styles for authentication buttons */
 .auth-buttons {
   position: absolute;
   top: 10px;
   left: 10px;
   z-index: 1000;
+  display: flex;
+  gap: 10px; /* Spacing between buttons */
 }
 
-/* Optional: Customize the look of the buttons */
-.auth-buttons button {
-  margin-right: 10px;
+.sign-in-btn {
+  background-color: #007bff; /* Blue background */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px; /* Rounded corners */
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sign-in-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: translateY(-2px); /* Slight upward movement */
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sign-in-btn:active {
+  transform: translateY(1px); /* Slight downward movement on click */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-btn {
+  background-color: #28a745; /* Green background for the User button */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-btn:hover {
+  background-color: #218838; /* Darker green on hover */
+  transform: translateY(-2px); /* Slight upward movement */
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
+}
+
+.user-btn:active {
+  transform: translateY(1px); /* Slight downward movement on click */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Styles for Account Balance */
@@ -126,7 +172,6 @@ h1 {
   left: 10px; /* Controls the horizontal position */
   z-index: 9999; /* Ensure it's above other content */
 }
-
 
 /* Additional responsiveness to adjust spacing on smaller screens */
 @media (max-width: 600px) {

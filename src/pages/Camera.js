@@ -132,7 +132,7 @@ function Camera() {
         <div
           style={{
             position: "fixed",
-            bottom: 20,
+            bottom: 200,
             right: 20,
             display: "flex",
             flexDirection: "column",
