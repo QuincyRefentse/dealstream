@@ -37,7 +37,7 @@ const Reports = () => {
 
         {/* Button container for both "Back to Camera" and "Clear Reports" */}
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button 
+          <button
             onClick={() => navigate(-1)}
             style={{
               padding: '10px 20px',
@@ -45,7 +45,7 @@ const Reports = () => {
               color: 'white',
               border: 'none',
               borderRadius: '5px',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
           >
             Back to Camera
@@ -59,7 +59,7 @@ const Reports = () => {
               color: 'white',
               border: 'none',
               borderRadius: '5px',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
           >
             Clear Reports
@@ -70,13 +70,15 @@ const Reports = () => {
       {detections.length === 0 ? (
         <p>No detection records found.</p>
       ) : (
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{
-            width: '100%',
-            borderCollapse: 'collapse',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.12)',
-            backgroundColor: 'white'
-          }}>
+        <div style={{ maxHeight: '500px', overflowY: 'auto' }}> {/* Add max height and enable vertical scrolling */}
+          <table
+            style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.12)',
+              backgroundColor: 'white',
+            }}
+          >
             <thead>
               <tr style={{ backgroundColor: '#f8f9fa' }}>
                 <th style={tableHeaderStyle}>Object #</th>

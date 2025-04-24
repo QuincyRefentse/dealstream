@@ -99,19 +99,19 @@ function App() {
 
         <nav className="navbar">
           <div className={active === 0 ? 'active' : ''} onClick={() => setActive(0)}>
-            <Link to="/home" className="home-link">
+            <Link to="/camera" className="home-link">{/* /home */}
               <img src={home} alt="Home" className="assets-icon" />
             </Link>
           </div>
 
-          <div className={active === 1 ? 'active' : ''} onClick={() => setActive(1)}>
-            <Link to="/reports" className="report-link">
+          <div className={active === 1 ? 'active' : ''} onClick={() => setActive(1)}> 
+            <Link to="/reports" className="report-link">{/* /reports */}
               <img src={report} alt="Reports" className="assets-icon" />
             </Link>
           </div>
 
           <div className={active === 2 ? 'active' : ''} onClick={() => setActive(2)}>
-            <Link to="/camera" className="camera-link">
+            <Link to="/camera" className="camera-link"> {/* /camera */}
               <img src={camera} alt="Camera" className="assets-icon" />
             </Link>
           </div>
@@ -145,7 +145,7 @@ function App() {
         <Routes>
           <Route
             path="/home"
-            element={<Home balance={balance} updateAssets={updateAssets} assets={assets} />}
+            /*element={<Home balance={balance} updateAssets={updateAssets} assets={assets} />} */
           />
           <Route path="/reports" element={<Report />} />
           <Route path="/camera" element={<Camera />} />
@@ -154,7 +154,7 @@ function App() {
             element={<BuySellForm balance={balance} updateAssets={updateAssets} assets={assets} />}
           />
           <Route path="/assets" element={<Assets assets={assets} />} />
-          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/" element={<Navigate to="/camera" />} />
           <Route path="*" element={<div>404 - Page Not Found</div>} />
         </Routes>
 
