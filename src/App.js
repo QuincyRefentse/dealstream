@@ -128,12 +128,16 @@ function App() {
             <UserButton className="user-btn" />
           </SignedIn>
         </div>
-
+  
+        {/* 
         <div className="account-balance">
           Balance: ${balance.toFixed(2)}
-        </div>
+        </div> 
+        */}
 
+        { /*
         <div className="assets-button">
+
           <Link to="/assets">
             <button className="assets-btn">
               <img src={vault} alt="Assets" className="assets-icon" />
@@ -141,6 +145,8 @@ function App() {
             </button>
           </Link>
         </div>
+        */}
+        
 
         <Routes>
           <Route
